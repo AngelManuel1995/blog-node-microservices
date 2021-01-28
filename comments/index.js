@@ -4,10 +4,10 @@ const PORT = process.env.PORT || 4001
 
 const express = require('express')
 const { randomBytes } = require('crypto')
-
+const cors = require('cors')
 const app = express()
 app.use(express.json())
-
+app.use(cors())
 const commentsByPostId = {}
 
 app.get('/posts/:id/comments', (req, res) => {
