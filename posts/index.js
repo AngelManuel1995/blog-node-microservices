@@ -4,7 +4,7 @@ const express = require('express')
 const { randomBytes } = require('crypto')
 const cors = require('cors')
 const axios = require('axios')
-const EventPayload = require('./classes/event_payload')
+
 const app = express()
 app.use(express.json())
 app.use(cors())
