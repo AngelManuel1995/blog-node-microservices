@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const axios = require('axios')
 
 const PORT = process.env.PORT || 4002
 
@@ -9,19 +10,10 @@ app.use(cors())
 
 const posts = {}
 
-app.get('/posts', (req, res) => {
-	res.send(posts)
-})
-
-app.post('/events', (req, res) => {
-	const { type, data } = req.body
+const handleEvent = ( type, data ) => {
 	if(type === 'PostCreated'){
 		const { id, title } = data
-		posts[id] = {
-			id,
-			title,
-			comments:[]
-		}
+		posts[id] = { id, title, comments:[] }
 	}
 	if(type === 'CommentCreated'){
 		const { id, content, postId, status } = data
@@ -37,10 +29,23 @@ app.post('/events', (req, res) => {
 		comment.content = content
 		comment.status = status
   	}
-	console.log(posts)
+}
+
+app.get('/posts', (req, res) => {
+	res.send(posts)
+})
+
+app.post('/events', (req, res) => {
+	const { type, data } = req.body
+	handleEvent(type, data)
 	res.send({})
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+	const res = await axios.get('http://localhost:4005/events')
+	for(let {type, data} of res.data){
+		console.log('Proncessing event: ', type)
+		handleEvent(type, data)
+	}
 	console.log(`Listening on port ${PORT}`)
 })
