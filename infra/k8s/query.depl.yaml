@@ -22,7 +22,7 @@ metadata:
   name: query-srv
 spec:
   selector:
-    app: query-srv
+    app: query
   type: ClusterIP
   ports:
     - name: query

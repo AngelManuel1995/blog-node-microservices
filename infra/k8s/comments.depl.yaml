@@ -22,10 +22,10 @@ metadata:
   name: comments-srv
 spec:
   selector:
-    app: posts
+    app: comments
   type: ClusterIP
   ports:
-    - name: posts
+    - name: comments
       protocol: TCP
       port: 4001
       targetPort: 4001
